@@ -83,6 +83,7 @@ services:
     volumes:
       - ./backend:/node
     entrypoint: /usr/local/bin/npx tsc
+    # docker-compose up back-build
     # docker-compose run --rm back-bash bash
 
   front-create:
