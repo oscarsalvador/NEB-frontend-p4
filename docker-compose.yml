@@ -134,4 +134,6 @@ services:
     working_dir: /node
     volumes:
       - ./frontend:/node
-  # docker-compose run --rm front-bash bash
+    # docker-compose run --rm front-bash bash
+
+

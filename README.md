@@ -1,50 +1,41 @@
-## Journal
-1. Crear carpetas y docker compose
-2. Levantar mongo y mongo-express
-3. Preparar el backend
-    1. Escribir los servicios en docker-compose.yml
-    2. 
+# Archivos incluidos y no incluidos
+El repositorio tiene una carpeta "nodemon" que no es necesaria para lanzar las partes del sistema. La he incluido porque la he usado durante el desarrollo, y la uso para algunos servicios en el docker-compose. Solo contiene un dockerfile.
 
-### Backend
-Sondeo
-GET
+Tambien está incluida la carpeta dist del backend, con los archivos javascript resultado de la transpilacion de los typescript del backend. La he dejado incluida a proposito, para que no sea necesario instalar las herramientas de desarrollo para solo comprobar que el sistema funciona.
 
-POST - url encoded, porque por que no
-curl -v 'http://localhost:8082' -d "aaa=aa"
-POST - json
-curl -v 'http://localhost:8082' -d '{"bbb":"bb"}' -H 'Content-Type: application/json'
+Además, hay un archivo "populate.sh" que hace diez peticiones al backend para insertar datos con curl, de manera que no haya que meter varios a mano para ver el frontend con datos.
 
-Siguiendo la [guia](!https://www.digitalocean.com/community/tutorials/setting-up-a-node-project-with-typescript) de digitalocean.
-1. Levantar un bash en el contenedor de node
-1. Inicializar el proyecto  
-    ```npm init -y```
-1. Preparar el soporte de typescript  
-    ```npm install --save-dev typescript```
-1. Preparado la configuracion de typescript  
-    ```
-    tsconfig.json
+En el repo no esta incluida una carpeta "mongo", que será necesaria. Uso un contenedor de mongo para correr la BD en local. No podía subir una carpeta vacia. 
 
-    {
-        "compilerOptions": {
-        "module": "commonjs",
-        "esModuleInterop": true,
-        "target": "es6",
-        "moduleResolution": "node",
-        "sourceMap": true,
-        "outDir": "dist"
-        },
-        "lib": ["es2015"]
-    }
-    ```
-1. Instalar las dependencias del framework Express  
-    ```npm install --save express@latest```  
-    ```npm install -save-dev @types/express@latest```
+# Instrucciones
+Los pasos en común, para comprobar el funcionamiento del sistema y para montar el entorno de desarrollo.
 
-1. Añadido dependencia (solo para dev, no produccion)  
-    ```npm install nodemon --save-dev```
+```
+git clone https://github.com/oscarsalvador/NEB-frontend-p4.git \<carpeta-destino\>  
 
-1. Crear la carpeta de fuentes y desarrollar
+cd \<carpeta-destino>  
+mkdir mongo
 
-1. Usar el servicio de express de desarrollo para no tener que levantar el servidor con cada cambio. Para transpilar los cambios correr en otra sesion el servicio back-bash y ejecutar   
-    ```npx tsc```  
-    o usar el servicio back-build
+docker-compose up mongo -d
+docker-compose up mongo-express -d
+```
+
+## Comprobacion
+```
+docker-compose up back-install
+docker-compose up back-start -d
+docker-compose up front-install
+docker-compose up front-start
+
+docker-compose rm front-start
+docker-compose down back-start
+```
+
+## Desarrollo
+```
+docker-compose up back-install-dev
+docker-compose up back-build
+docker-compose up back-start-dev
+docker-compose up front-install
+docker-compose up front-start
+```
